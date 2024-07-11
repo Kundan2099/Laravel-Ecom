@@ -11,13 +11,22 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * The path to your application's "home" route.
+     * The path to your application's admin route.
      *
-     * Typically, users are redirected here after authentication.
+     * Typically, admins are redirected here after authentication.
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const ADMIN_DASHBOARD = '/admin/dashboard';
+
+    /**
+     * The path to your application's admin route.
+     *
+     * Typically, admins are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const HOME = '/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -35,6 +44,10 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            Route::middleware('web')
+                ->prefix('admin')
+                ->group(base_path('routes/admin.php'));
         });
     }
 }
