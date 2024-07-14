@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest:admin'])->group(function () {
 
-Route::get('/login', [AdminLoginController::class, 'viewLogin'])->name('admin.view.login');
+    Route::get('/login', [AdminLoginController::class, 'viewLogin'])->name('admin.view.login');
+    Route::post('/login', [AdminLoginController::class, 'handleLogin'])->name('handle.login');
 
 });
 
