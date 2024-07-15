@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -9,10 +9,32 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class AdminLoginController extends Controller
+interface LoginInterface
 {
-    public function viewLogin() {
-        return view('admin.pages.login');
+    public function viewLogin();
+    public function handleLogin(Request $request);
+}
+
+class LoginController extends Controller implements LoginInterface
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * View Login
+     *
+     * @return mixed
+     */
+    public function viewLogin()
+    {
+        return view('admin.pages.auth.login');
     }
 
 
@@ -24,9 +46,9 @@ class AdminLoginController extends Controller
     public function handleLogin(Request $request): mixed
     {
         try {
-
+            
             $validator = Validator::make($request->all(), [
-                'email' => ['required', 'string', 'email', 'min:10', 'max:100', 'exists:users'],
+                'email' => ['required', 'string', 'email', 'min:10', 'max:100', 'exists:admins'],
                 'password' => ['required', 'string', 'min:1', 'max:20']
             ]);
 
@@ -34,17 +56,18 @@ class AdminLoginController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            if (Auth::attempt([
+            if (Auth::guard('admin')->attempt([
                 'email' => $request->input('email'),
                 'password' => $request->input('password'),
             ], $request->get('remember'))) {
-                return redirect(RouteServiceProvider::HOME);
+                return redirect(RouteServiceProvider::ADMIN_DASHBOARD);
             }
 
             return redirect()->back()->withErrors([
-                'password' => ['Wrong password']
+                'password' => [
+                    'Wrong password'
+                ]
             ])->withInput($request->only('email', 'remember'));
-            
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
@@ -53,5 +76,4 @@ class AdminLoginController extends Controller
             ]);
         }
     }
-
 }
