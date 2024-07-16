@@ -13,6 +13,7 @@ interface LoginInterface
 {
     public function viewLogin();
     public function handleLogin(Request $request);
+    public function viewForgotPassword();
 }
 
 class LoginController extends Controller implements LoginInterface
@@ -68,6 +69,25 @@ class LoginController extends Controller implements LoginInterface
                     'Wrong password'
                 ]
             ])->withInput($request->only('email', 'remember'));
+        } catch (Exception $exception) {
+            return redirect()->back()->with('message', [
+                'status' => 'error',
+                'title' => 'An error occcured',
+                'description' => $exception->getMessage()
+            ]);
+        }
+    }
+
+        /**
+     * View Forgot Password
+     *
+     * @return mixed
+     */
+    public function viewForgotPassword(): mixed
+    {
+        try {
+
+            return view('admin.pages.auth.forgot-password');
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
