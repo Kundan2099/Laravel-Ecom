@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
 interface LoginInterface
@@ -47,7 +48,7 @@ class LoginController extends Controller implements LoginInterface
     public function handleLogin(Request $request): mixed
     {
         try {
-            
+
             $validator = Validator::make($request->all(), [
                 'email' => ['required', 'string', 'email', 'min:10', 'max:100', 'exists:admins'],
                 'password' => ['required', 'string', 'min:1', 'max:20']
@@ -78,7 +79,7 @@ class LoginController extends Controller implements LoginInterface
         }
     }
 
-        /**
+    /**
      * View Forgot Password
      *
      * @return mixed
@@ -94,6 +95,26 @@ class LoginController extends Controller implements LoginInterface
                 'title' => 'An error occcured',
                 'description' => $exception->getMessage()
             ]);
+        }
+    }
+
+    public function handleForgotPassword(Request $request)
+    {
+        try {
+
+            $validation = validator::make($request->all(), [
+                'email' => ['required', 'string', 'exsits:admins', 'min:6', 'max:100'],
+            ]);
+
+            if ($validation->fails()) {
+                return redirect()->back()->withErrors($request)->withInput();
+            }
+
+            $token = Str::random(64);
+
+            dd($request);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }

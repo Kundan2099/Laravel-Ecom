@@ -17,9 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['guest:admin'])->group(function () {
-
+    //Admin Login
     Route::get('/login', [LoginController::class, 'viewLogin'])->name('admin.view.login');
     Route::post('/logins', [LoginController::class, 'handleLogin'])->name('admin.handle.login');
+
+    //Admin Forgot-Password
+    Route::get('/forgot-password', [LoginController::class, 'viewForgotPassword'])->name('admin.view.forgot.password');
+    Route::post('/forgote-password', [LoginController::class, 'handleForgotPassword'])->name('admin.handle.forgot.password');
 });
 
 // Protected for middleware
@@ -33,6 +37,3 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'viewDashboard'])->name('admin.view.dashboard');
 });
 
-Route::get('test', function () {
-    return 'admin';
-});
