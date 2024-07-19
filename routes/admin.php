@@ -29,11 +29,12 @@ Route::middleware(['guest:admin'])->group(function () {
 // Protected for middleware
 Route::middleware('auth:admin')->group(function () {
 
-    Route::get('logout', function () {
-        Auth::logout();
-        return redirect()->route('admin.view.login');
-    })->name('admin.handle.logout');
+    // Route::get('logout', function () {
+    //     Auth::logout();
+    //     return redirect()->route('admin.view.login');
+    // })->name('admin.handle.logout');
+
+    Route::get('/logout', [DashboardController::class, 'logout'])->name('admin.handle.logout');
 
     Route::get('/dashboard', [DashboardController::class, 'viewDashboard'])->name('admin.view.dashboard');
 });
-

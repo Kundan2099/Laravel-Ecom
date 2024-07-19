@@ -15,14 +15,13 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::create([
-            'name' => 'Admin Name',
-            'email' => 'admin@gmail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('123456'),
-            'remember_token' => str::random(10),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+
+            $admin = new Admin();
+            $admin->name = config('auth.admin.name');
+            $admin->email = config('auth.admin.email');
+            $admin->phone = config('auth.admin.phone');
+            $admin->password = Hash::make(config('auth.admin.password'));
+            $admin->generateAdminProfile();
+            $admin->save();
     }
 }

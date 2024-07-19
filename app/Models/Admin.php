@@ -13,9 +13,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasUuids;
+    use HasApiTokens, HasFactory, Notifiable, ProfileImage, SoftDeletes, HasUuids;
 
-    protected $guard = 'admin';
+    protected $guard = 'admins';
 
     /**
      * The attributes that are mass assignable.

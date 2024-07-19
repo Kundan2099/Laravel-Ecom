@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordResetToken;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +17,8 @@ interface LoginInterface
     public function viewLogin();
     public function handleLogin(Request $request);
     public function viewForgotPassword();
+    public function handleForgotPassword(Request $request);
+
 }
 
 class LoginController extends Controller implements LoginInterface
@@ -70,6 +74,7 @@ class LoginController extends Controller implements LoginInterface
                     'Wrong password'
                 ]
             ])->withInput($request->only('email', 'remember'));
+            
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
@@ -98,7 +103,7 @@ class LoginController extends Controller implements LoginInterface
         }
     }
 
-    public function handleForgotPassword(Request $request)
+    public function handleForgotPassword(Request $request): mixed
     {
         try {
 
@@ -112,9 +117,29 @@ class LoginController extends Controller implements LoginInterface
 
             $token = Str::random(64);
 
-            dd($request);
-        } catch (\Throwable $th) {
-            //throw $th;
+            // PasswordResetToken::where('email', $request->input('email'))->delete();
+
+            // PasswordResetToken::create([
+            //     'email' => $request->input('email'),
+            //     'token' => $token,
+            //     'created_at' => Carbon::now()
+            // ]);
+
+            // $url = route('admin.view.reset.password', ['token' => $token]);
+
+            // dispatch(new SendPasswordResetMail($request->input('email'), $url));
+
+            return redirect()->back()->with('message', [
+                'status' => 'success',
+                'title' => 'Link sent',
+                'description' => 'The password reset link sent to your email'
+            ]);
+        } catch (Exception $exception) {
+            return redirect()->back()->with('message', [
+                'status' => 'error',
+                'title' => 'An error occcured',
+                'description' => $exception->getMessage()
+            ]);
         }
     }
 }

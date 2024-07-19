@@ -127,11 +127,11 @@ return [
     'password_timeout' => 10800,
 
 
-    // 'admin' => [
-    //     'name' => env('DEFAULT_ADMIN_NAME'),
-    //     'email' => env('DEFAULT_ADMIN_EMAIL'),
-    //     'phone' => env('DEFAULT_ADMIN_PHONE'),
-    //     'password' => env('DEFAULT_ADMIN_PASSWORD'),
-    // ],
+    'admin' => [
+        'name' => env('DEFAULT_ADMIN_NAME'),
+        'email' => env('DEFAULT_ADMIN_EMAIL'),
+        'phone' => env('DEFAULT_ADMIN_PHONE'),
+        'password' => env('DEFAULT_ADMIN_PASSWORD'),
+    ],
 
 ];
