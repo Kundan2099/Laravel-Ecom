@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAccessController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Auth;
@@ -37,4 +38,11 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/logout', [DashboardController::class, 'logout'])->name('admin.handle.logout');
 
     Route::get('/dashboard', [DashboardController::class, 'viewDashboard'])->name('admin.view.dashboard');
+
+    Route::prefix('admin-access')->controller(AdminAccessController::class)->group(function () {
+        Route::get('/', 'viewAdminAccessList')->name('admin.view.admin.access.list');
+        Route::get('/create', 'viewAdminAccessCreate')->name('admin.view.admin.access.create');
+        Route::get('/update/{id}', 'viewAdminAccessUpdate')->name('admin.view.admin.access.update');
+        Route::post('/create', 'handleAdminAccessCreate')->name('admin.handle.admin.access.create');
+    });
 });

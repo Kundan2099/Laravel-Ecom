@@ -27,8 +27,7 @@
 
                 {{-- @can(\App\Enums\Permission::VIEW_ACCESS->value) --}}
                 <li class="sidebar-tab" id="admin-access-tab">
-                    {{-- <a href="{{route('admin.view.admin.access.list')}}"> --}}
-                    <a href="">
+                    <a href="{{route('admin.view.admin.access.list')}}">
                         <i data-feather="shield"></i>
                         <span>Admin Access</span>
                     </a>
@@ -37,49 +36,49 @@
 
                 <li class="sidebar-tab" id="user-tab">
                     <a href="">
-                        <i data-feather="award"></i>
+                        <i data-feather="file-minus"></i>
                         <span>Category</span>
                     </a>
                 </li>
 
                 <li class="sidebar-tab" id="user-tab">
                     <a href="">
-                        <i data-feather="users"></i>
+                        <i data-feather="file-minus"></i>
                         <span>Sub Category</span>
                     </a>
                 </li>
 
                 <li class="sidebar-tab" id="user-tab">
                     <a href="">
-                        <i data-feather="users"></i>
+                        <i data-feather="pocket"></i>
                         <span>Brands</span>
                     </a>
                 </li>
 
                 <li class="sidebar-tab" id="user-tab">
                     <a href="">
-                        <i data-feather="users"></i>
+                        <i data-feather="tag"></i>
                         <span>Products</span>
                     </a>
                 </li>
 
                 <li class="sidebar-tab" id="user-tab">
                     <a href="">
-                        <i data-feather="users"></i>
+                        <i data-feather="truck"></i>
                         <span>Shipping</span>
                     </a>
                 </li>
 
                 <li class="sidebar-tab" id="user-tab">
                     <a href="">
-                        <i data-feather="users"></i>
+                        <i data-feather="shopping-bag"></i>
                         <span>Orders</span>
                     </a>
                 </li>
 
                 <li class="sidebar-tab" id="user-tab">
                     <a href="">
-                        <i data-feather="users"></i>
+                        <i data-feather="percent"></i>
                         <span>Discount</span>
                     </a>
                 </li>
@@ -93,7 +92,7 @@
 
                 <li class="sidebar-tab" id="user-tab">
                     <a href="">
-                        <i data-feather="users"></i>
+                        <i data-feather="file-text"></i>
                         <span>Pages</span>
                     </a>
                 </li>
