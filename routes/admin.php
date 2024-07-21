@@ -44,5 +44,6 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/create', 'viewAdminAccessCreate')->name('admin.view.admin.access.create');
         Route::get('/update/{id}', 'viewAdminAccessUpdate')->name('admin.view.admin.access.update');
         Route::post('/create', 'handleAdminAccessCreate')->name('admin.handle.admin.access.create');
+        Route::post('/update/{id}', 'handleAdminAccessUpdate')->name('admin.handle.admin.access.update');
     });
 });
