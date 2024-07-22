@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminAccessController;
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,5 +45,17 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/update/{id}', 'viewAdminAccessUpdate')->name('admin.view.admin.access.update');
         Route::post('/create', 'handleAdminAccessCreate')->name('admin.handle.admin.access.create');
         Route::post('/update/{id}', 'handleAdminAccessUpdate')->name('admin.handle.admin.access.update');
+        Route::put('/status', 'handleToggleAdminAccessStatus')->name('admin.handle.admin.access.status');
+        Route::get('/delete/{id}', 'handleAdminAccessDelete')->name('admin.handle.admin.access.delete');
+    });
+
+    Route::prefix('category')->controller(CategoryController::class)->group(function () {
+        Route::get('/', 'viewCategoryList')->name('admin.view.category.list');
+        Route::get('/create', 'viewCategoryCreate')->name('admin.view.category.create');
+        Route::get('/update/{id}', 'viewCategoryUpdate')->name('admin.view.category.update');
+        Route::post('/create/{id}', 'handleCategoryCreate')->name('admin.handle.category.update');
+        Route::post('/update/{id}', 'handleCategoryUpdate')->name('admin.handle.category.update');
+        Route::put('/status', 'handleTogglecategoryStatus')->name('admin.handle.category.status');
+        Route::get('/delete/{id}', 'handlecategoryDelete')->name('admin.handle.category.delete');
     });
 });

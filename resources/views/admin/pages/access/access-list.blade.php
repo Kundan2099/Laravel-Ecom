@@ -43,7 +43,6 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-
                         @foreach ($admins as $key => $admin)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
@@ -70,12 +69,14 @@
                                         <div class="dropdown-menu">
                                             <ul>
                                                 {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
-                                                <li><a href="{{route('admin.view.admin.access.update', ['id' => $admin->id])}}" class="dropdown-link-primary"><i data-feather="edit"
+                                                <li><a href="{{ route('admin.view.admin.access.update', ['id' => $admin->id]) }}"
+                                                        class="dropdown-link-primary"><i data-feather="edit"
                                                             class="mr-1"></i> Edit Admin Access</a></li>
                                                 {{-- @endcan --}}
 
                                                 {{-- @can(\App\Enums\Permission::DELETE_ACCESS->value) --}}
-                                                <li><a href="" class="dropdown-link-danger"><i data-feather="trash-2"
+                                                <li><a href="javascript:handleDelete({{ $admin->id }});"
+                                                        class="dropdown-link-danger"><i data-feather="trash-2"
                                                             class="mr-1"></i> Delete Admin Access</a></li>
                                                 {{-- @endcan --}}
 
@@ -90,4 +91,46 @@
             </div>
         </div>
     </figure>
+@endsection
+
+@section('panel-script')
+    <script>
+        document.getElementById('admin-access-tab').classList.add('active');
+
+        const handleUpdateStatus = (id) => {
+            fetch("{{ route('admin.handle.admin.access.status') }}", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    admin_id: id,
+                    _token: "{{ csrf_token() }}"
+                })
+            }).then((response) => {
+                return response.json();
+            }).catch((error) => {
+                swal({
+                    title: "Internal server error",
+                    text: "An error occured, please try again",
+                    icon: "error",
+                })
+            });
+        }
+
+        const handleDelete = (id) => {
+            swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this admin access!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        window.location = `{{ url('admin/admin-access/delete') }}/${id}`;
+                    }
+                });
+        }
+    </script>
 @endsection

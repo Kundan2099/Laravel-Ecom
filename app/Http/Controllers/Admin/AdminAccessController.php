@@ -8,6 +8,7 @@ use App\Models\Role;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -19,6 +20,8 @@ interface AdminAccessInterface
     public function viewAdminAccessUpdate($id);
     public function handleAdminAccessCreate(Request $request);
     public function handleAdminAccessUpdate(Request $request, $id);
+    public function handleToggleAdminAccessStatus(Request $request);
+    public function handleAdminAccessDelete($id);
 }
 
 class AdminAccessController extends Controller implements AdminAccessInterface
@@ -142,7 +145,7 @@ class AdminAccessController extends Controller implements AdminAccessInterface
             $role = Role::find($request->input('role_id'));
             $admin->assignRole($role);
 
-            return redirect()->route('admin.view.admin.access.list')->with('message', [
+            return redirect()->route('admin.view.admin.access.access-list')->with('message', [
                 'status' => 'success',
                 'title' => 'Admin access created',
                 'description' => 'The admin access is successfully created.'
@@ -185,10 +188,83 @@ class AdminAccessController extends Controller implements AdminAccessInterface
             }
             $admin->update();
 
-            return redirect()->route('admin.view.admin.access.list')->with('message', [
+            return redirect()->route('admin.view.admin.access.access-list')->with('message', [
                 'status' => 'success',
                 'title' => 'Changes saved',
                 'description' => 'The admin access is successfully saved.'
+            ]);
+        } catch (Exception $exception) {
+            return redirect()->back()->with('message', [
+                'status' => 'error',
+                'title' => 'An error occcured',
+                'description' => $exception->getMessage()
+            ]);
+        }
+    }
+
+
+    /**
+     * Handle Toggle Admin Access Status
+     *
+     * @return mixed
+     */
+    public function handleToggleAdminAccessStatus(Request $request): Response
+    {
+        try {
+
+            $validation = Validator::make($request->all(), [
+                'admin_id' => ['required', 'string', 'exists:admins,id']
+            ]);
+
+            if ($validation->fails()) {
+                return response([
+                    'status' => false,
+                    'message' => $validation->errors()->first(),
+                    'error' => $validation->errors()->getMessages()
+                ], 200);
+            }
+
+            $admin = Admin::find($request->input('admin_id'));
+            $admin->status = !$admin->status;
+            $admin->update();
+
+            return response([
+                'status' => true,
+                'message' => "Status successfully updated",
+                'data' => $admin
+            ], 200);
+        } catch (Exception $exception) {
+            return response([
+                'status' => false,
+                'message' => "An error occcured",
+                'error' => $exception->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Handle Admin Access Delete
+     * 
+     * @return mixed
+     */
+    public function handleAdminAccessDelete($id): RedirectResponse
+    {
+        try {
+            $admin = Admin::find($id);
+            if (!$admin) {
+                return redirect()->back()->with('message', [
+                    'status' => 'warning',
+                    'title' => 'Admin not found',
+                    'description' => 'Admin not found with specified ID'
+                ]);
+            }
+
+            $admin->delete();
+
+            return redirect()->route('admin.view.admin.access.access-list')->with('message', [
+                'status' => 'success',
+                'title' => 'Admin access deleted',
+                'description' => 'The admin access is successfully deleted.'
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
