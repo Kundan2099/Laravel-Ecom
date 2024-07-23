@@ -53,7 +53,7 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/', 'viewCategoryList')->name('admin.view.category.list');
         Route::get('/create', 'viewCategoryCreate')->name('admin.view.category.create');
         Route::get('/update/{id}', 'viewCategoryUpdate')->name('admin.view.category.update');
-        Route::post('/create/{id}', 'handleCategoryCreate')->name('admin.handle.category.update');
+        Route::post('/create', 'handleCategoryCreate')->name('admin.handle.category.create');
         Route::post('/update/{id}', 'handleCategoryUpdate')->name('admin.handle.category.update');
         Route::put('/status', 'handleTogglecategoryStatus')->name('admin.handle.category.status');
         Route::get('/delete/{id}', 'handlecategoryDelete')->name('admin.handle.category.delete');

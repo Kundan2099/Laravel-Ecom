@@ -34,8 +34,8 @@
                 </li>
                 {{-- @endcan --}}
 
-                <li class="sidebar-tab" id="user-tab">
-                    <a href="">
+                <li class="sidebar-tab" id="category-tab">
+                    <a href="{{route('admin.view.category.list')}}">
                         <i data-feather="file-minus"></i>
                         <span>Category</span>
                     </a>

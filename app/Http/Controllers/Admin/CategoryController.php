@@ -9,7 +9,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\Validator;
+
 use Symfony\Contracts\Service\Attribute\Required;
 
 interface CategoryInterface
@@ -65,8 +67,12 @@ class CategoryController extends Controller implements CategoryInterface
     public function viewCategoryCreate(): mixed
     {
         try {
+            $category = Category::all();
 
-            return view('admin.pages.category.category-create');
+            return view('admin.pages.category.category-create', [
+                'category' => $category
+
+            ]);
             
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -117,7 +123,7 @@ class CategoryController extends Controller implements CategoryInterface
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
                 'slug' => ['required', 'string', 'min:1', 'max:250'],
-                'img' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
+                // 'img' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
             ]);
 
             if ($validation) {
