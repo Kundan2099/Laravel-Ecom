@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Support\Facades\Validator;
-
 use Symfony\Contracts\Service\Attribute\Required;
 
 interface CategoryInterface
@@ -67,13 +65,8 @@ class CategoryController extends Controller implements CategoryInterface
     public function viewCategoryCreate(): mixed
     {
         try {
-            $category = Category::all();
 
-            return view('admin.pages.category.category-create', [
-                'category' => $category
-
-            ]);
-            
+            return view('admin.pages.category.category-create');
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
@@ -120,13 +113,14 @@ class CategoryController extends Controller implements CategoryInterface
     public function handleCategoryCreate(Request $request): RedirectResponse
     {
         try {
+
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
                 'slug' => ['required', 'string', 'min:1', 'max:250'],
-                // 'img' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
+                'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
             ]);
 
-            if ($validation) {
+            if ($validation->fails()) {
                 return redirect()->back()->withErrors($validation)->withInput();
             }
 
@@ -138,12 +132,11 @@ class CategoryController extends Controller implements CategoryInterface
             }
             $category->save();
 
-            return redirect()->route('admin.pages.category.category-list')->with('message', [
+            return redirect()->route('admin.view.category.list')->with('message', [
                 'status' => 'success',
                 'title' => 'Category created',
                 'description' => 'The Category is successfully created.'
             ]);
-
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
@@ -193,7 +186,6 @@ class CategoryController extends Controller implements CategoryInterface
                 'title' => 'Category saved',
                 'description' => 'The Category is successfully saved.'
             ]);
-
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',

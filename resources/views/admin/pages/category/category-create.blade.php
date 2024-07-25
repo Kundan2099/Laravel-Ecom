@@ -41,14 +41,31 @@
                     <div class="flex flex-col">
                         <label for="slug" class="input-label">Slug <em>*</em></label>
                         <input type="slug" name="slug" value="{{ old('slug') }}"
-                            class="input-box-md @error('email') input-invalid @enderror" placeholder="Enter Email Address"
+                            class="input-box-md @error('slug') input-invalid @enderror" placeholder="Enter Email Address"
                             required minlength="1" maxlength="250">
                         @error('slug')
                             <span class="input-error">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    {{-- Image --}}
+                    {{-- Thumbnail --}}
+                    <div class="input-group 2xl:col-span-5 lg:col-span-4 md:col-span-2 sm:col-span-1">
+                        <label for="img" class="input-label">Thumbnail <span>(Format: png, jpg, jpeg, webp,
+                                avif)</span> <em>*</em></label>
+                        <div class="flex space-x-3 my-2">
+                            <div class="input-box-dragable">
+                                <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp, image/avif"
+                                    onchange="handleThumbnailPreview(event)" name="img" required>
+                                <i data-feather="upload-cloud"></i>
+                                <span>Darg and Drop Image Files</span>
+                            </div>
+                            <img src="{{ asset('admin/images/default-thumbnail.png') }}" id="img"
+                                alt="img" class="input-thumbnail-preview">
+                        </div>
+                        @error('img')
+                            <span class="input-error">{{ $message }}</span>
+                        @enderror
+                    </div>
 
 
                 </div>
@@ -58,4 +75,17 @@
             </div>
         </figure>
     </form>
+@endsection
+
+
+@section('panel-script')
+    <script>
+        const handleThumbnailPreview = (event) => {
+            if (event.target.files.length == 0) {
+                document.getElementById('img').src = "{{ asset('admin/images/default-thumbnail.png') }}";
+            } else {
+                document.getElementById('img').src = URL.createObjectURL(event.target.files[0])
+            }
+        }
+    </script>
 @endsection

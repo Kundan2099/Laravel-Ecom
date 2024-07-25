@@ -49,9 +49,13 @@
                                 <td>{{ $category->slug }}</td>
                                 <td>
                                     @if ($category->img)
-                                        <img src="{{ $category->img }}" class="img-fluid" style="max-width:80px"
+                                        <img src="{{ asset('storage/categories/' . $category->img) }}" class="img-fluid" style="max-width:80px"
                                             alt="{{ $category->img }}">
-                                    @else
+                                            <img src="{{asset('storage/'.$membership->thumbnail_image)}}" alt="membership-logo" class="w-[100px] h-auto">
+
+                                    @else    
+                                    {{-- <img src="{{ asset(' . $image->path) }}" alt="Image"> --}}
+
                                         <img src="{{ asset('admin/images/thumbnail-default.jpg') }}" class="img-fluid"
                                             style="max-width:80px" alt="avatar.png">
                                     @endif
