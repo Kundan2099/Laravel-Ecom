@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Contracts\Service\Attribute\Required;
 
 interface CategoryInterface
 {
@@ -162,17 +161,16 @@ class CategoryController extends Controller implements CategoryInterface
                     'description' => 'Category not found with specified ID'
                 ]);
             }
-
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
                 'slug' => ['required', 'string', 'min:1', 'max:250'],
-                'img' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
+                'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
             ]);
 
-            if ($validation) {
+            if ($validation->fails()) {
                 return redirect()->back()->withErrors($validation)->withInput();
             }
-
+            
             $category->name = $request->input('name');
             $category->slug = $request->input('slug');
             if ($request->hasFile('img')) {
@@ -181,7 +179,8 @@ class CategoryController extends Controller implements CategoryInterface
             }
             $category->update();
 
-            return redirect()->route('admin.pages.category.category-list')->with('message', [
+
+            return redirect()->route('admin.view.category.list')->with('message', [
                 'status' => 'success',
                 'title' => 'Category saved',
                 'description' => 'The Category is successfully saved.'
@@ -253,7 +252,7 @@ class CategoryController extends Controller implements CategoryInterface
 
             $category->delete();
 
-            return redirect()->route('admin.pages.category.category-list')->with('message', [
+            return redirect()->route('admin.view.category.list')->with('message', [
                 'status' => 'success',
                 'title' => 'Category deleted',
                 'description' => 'The Category access is successfully deleted.'

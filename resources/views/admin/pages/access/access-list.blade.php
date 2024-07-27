@@ -75,7 +75,7 @@
                                                 {{-- @endcan --}}
 
                                                 {{-- @can(\App\Enums\Permission::DELETE_ACCESS->value) --}}
-                                                <li><a href="javascript:handleDelete({{ $admin->id }});"
+                                                <li><a href="javascript:handleDelete('{{ $admin->id }}')"
                                                         class="dropdown-link-danger"><i data-feather="trash-2"
                                                             class="mr-1"></i> Delete Admin Access</a></li>
                                                 {{-- @endcan --}}

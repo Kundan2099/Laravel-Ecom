@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAccessController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,5 +58,15 @@ Route::middleware('auth:admin')->group(function () {
         Route::post('/update/{id}', 'handleCategoryUpdate')->name('admin.handle.category.update');
         Route::put('/status', 'handleTogglecategoryStatus')->name('admin.handle.category.status');
         Route::get('/delete/{id}', 'handlecategoryDelete')->name('admin.handle.category.delete');
+    });
+
+    Route::prefix('sub-category')->controller(SubCategoryController::class)->group(function () {
+        Route::get('/', 'viewSubCategoryList')->name('admin.view.subcategory.list');
+        Route::get('/create', 'viewSubCategoryCreate')->name('admin.view.subcategory.create');
+        Route::get('/update/{id}', 'viewSubCategoryUpdate')->name('admin.view.subcategory.update');
+        Route::get('/create', 'handleSubCategoryCreate')->name('admin.handle.subcategory.create');
+        Route::get('//update/{id}', 'handleSubCategoryUpdate')->name('admin.handle.subcategory.update');
+        Route::get('/status', 'handleToggleSubCategoryStatus')->name('admin.handle.subcategory.status');
+        Route::get('/delete/{id}', 'handleSubCategoryDelete')->name('admin.handle.subcategory.delete');
     });
 });

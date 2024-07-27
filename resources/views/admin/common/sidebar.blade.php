@@ -41,8 +41,8 @@
                     </a>
                 </li>
 
-                <li class="sidebar-tab" id="user-tab">
-                    <a href="">
+                <li class="sidebar-tab" id="subcategory-tab">
+                    <a href="{{route('admin.view.subcategory.list')}}">
                         <i data-feather="file-minus"></i>
                         <span>Sub Category</span>
                     </a>

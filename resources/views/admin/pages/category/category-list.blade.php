@@ -49,17 +49,13 @@
                                 <td>{{ $category->slug }}</td>
                                 <td>
                                     @if ($category->img)
-                                        <img src="{{ asset('storage/categories/' . $category->img) }}" class="img-fluid" style="max-width:80px"
-                                            alt="{{ $category->img }}">
-                                            <img src="{{asset('storage/'.$membership->thumbnail_image)}}" alt="membership-logo" class="w-[100px] h-auto">
-
-                                    @else    
-                                    {{-- <img src="{{ asset(' . $image->path) }}" alt="Image"> --}}
-
+                                        <img src="{{ asset('storage/' . $category->img) }}" class="img-fluid"
+                                            style="max-width:80px" alt="{{ $category->img }}">
+                                    @else
                                         <img src="{{ asset('admin/images/thumbnail-default.jpg') }}" class="img-fluid"
                                             style="max-width:80px" alt="avatar.png">
                                     @endif
-                                </td> 
+                                </td>
                                 {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
                                 <td>
                                     <label class="toggler-switch">
@@ -82,7 +78,7 @@
                                                 {{-- @endcan --}}
 
                                                 {{-- @can(\App\Enums\Permission::DELETE_ACCESS->value) --}}
-                                                <li><a href="javascript:handleDelete({{ $category->id }});"
+                                                <li><a href="javascript:handleDelete('{{ $category->id }}')"
                                                         class="dropdown-link-danger"><i data-feather="trash-2"
                                                             class="mr-1"></i> Delete Category</a></li>
                                                 {{-- @endcan --}}
@@ -135,7 +131,7 @@
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        window.location = `{{ url('admin/category-access/delete') }}/${id}`;
+                        window.location = `{{ url('admin/category/delete') }}/${id}`;
                     }
                 });
         }

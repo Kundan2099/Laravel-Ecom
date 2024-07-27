@@ -145,7 +145,7 @@ class AdminAccessController extends Controller implements AdminAccessInterface
             $role = Role::find($request->input('role_id'));
             $admin->assignRole($role);
 
-            return redirect()->route('admin.view.admin.access.access-list')->with('message', [
+            return redirect()->route('admin.view.admin.access.list')->with('message', [
                 'status' => 'success',
                 'title' => 'Admin access created',
                 'description' => 'The admin access is successfully created.'
@@ -188,7 +188,7 @@ class AdminAccessController extends Controller implements AdminAccessInterface
             }
             $admin->update();
 
-            return redirect()->route('admin.view.admin.access.access-list')->with('message', [
+            return redirect()->route('admin.view.admin.access.list')->with('message', [
                 'status' => 'success',
                 'title' => 'Changes saved',
                 'description' => 'The admin access is successfully saved.'
@@ -261,7 +261,7 @@ class AdminAccessController extends Controller implements AdminAccessInterface
 
             $admin->delete();
 
-            return redirect()->route('admin.view.admin.access.access-list')->with('message', [
+            return redirect()->route('admin.view.admin.access.list')->with('message', [
                 'status' => 'success',
                 'title' => 'Admin access deleted',
                 'description' => 'The admin access is successfully deleted.'
