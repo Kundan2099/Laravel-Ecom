@@ -39,8 +39,10 @@ class SubCategoryController extends Controller
     public function viewSubCategoryList(): mixed
     {
         try {
-
-            return view('admin.pages.subcategory.subcategory-list');
+            $subcategories = SubCategory::all();
+            return view('admin.pages.subcategory.subcategory-list', [
+                'subcategories' => $subcategories
+            ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',

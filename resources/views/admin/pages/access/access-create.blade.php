@@ -76,7 +76,7 @@
 
                     {{-- Password --}}
                     <div class="input-group">
-                        <label for="password" class="input-label">Password <em>*</em></label>
+                        <label for="password" class="input-label">x <em>*</em></label>
                         <input type="password" name="password"
                             class="input-box-md @error('password') input-invalid @enderror" placeholder="Enter Password"
                             required minlength="6" maxlength="20">
@@ -87,7 +87,7 @@
 
                     {{-- Confirm password --}}
                     <div class="input-group">
-                        <label for="password_confirmation" class="input-label">Confirm password <em>*</em></label>
+                        <label for="password_confirmation" class="input-label">Confirm x <em>*</em></label>
                         <input type="password" name="password_confirmation"
                             class="input-box-md @error('password_confirmation') input-invalid @enderror"
                             placeholder="Repeat Password" required minlength="6" maxlength="20">

@@ -64,8 +64,8 @@
                                 <img src="{{ asset('storage/' . $category->img) }}" class="img-fluid"
                                     style="max-width:266px" alt="{{ $category->img }}">
                             @else --}}
-                                <img src="{{ asset('admin/images/default-thumbnail.png') }}" id="img" alt="img"
-                                    class="input-thumbnail-preview">
+                            <img src="{{ asset('admin/images/default-thumbnail.png') }}" id="img" alt="img"
+                                class="input-thumbnail-preview">
                             {{-- @endif --}}
                         </div>
                         @error('img')
