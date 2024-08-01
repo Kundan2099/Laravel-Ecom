@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\SubCategory;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 interface SubCategoryInterface
@@ -39,7 +42,7 @@ class SubCategoryController extends Controller
     public function viewSubCategoryList(): mixed
     {
         try {
-            $subcategories = SubCategory::all();
+            $subcategories = SubCategory::with('category')->get();
             return view('admin.pages.subcategory.subcategory-list', [
                 'subcategories' => $subcategories
             ]);
@@ -60,8 +63,11 @@ class SubCategoryController extends Controller
     public function viewSubCategoryCreate(): mixed
     {
         try {
-
-            return view('admin.pages.subcategory.subcategory-create');
+            // $categories = Category::select('name')->orderBy('name', 'asc')->get();
+            $categories = Category::all();
+            return view('admin.pages.subcategory.subcategory-create', [
+                'categories' => $categories,
+            ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
@@ -80,6 +86,7 @@ class SubCategoryController extends Controller
     {
         try {
             $subcategory = SubCategory::find($id);
+
             if (!$subcategory) {
                 return redirect()->back()->with('message', [
                     'status' => 'warning',
@@ -87,9 +94,12 @@ class SubCategoryController extends Controller
                     'description' => 'SubCategory not found with specified ID'
                 ]);
             }
+            $categories = Category::all();
 
             return view('admin.pages.subcategory.subcategory-update', [
-                'subcategory' => $subcategory
+                'subcategory' => $subcategory,
+                'categories' => $categories,
+
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -108,11 +118,10 @@ class SubCategoryController extends Controller
     public function handleSubCategoryCreate(Request $request): RedirectResponse
     {
         try {
-
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
                 'slug' => ['required', 'string', 'min:1', 'max:250'],
-                'catehory' => ['required', 'string', 'min:1', 'max:250'],
+                'category_id' => ['required', 'string', 'exists:categories,id'],
                 'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
             ]);
 
@@ -123,13 +132,13 @@ class SubCategoryController extends Controller
             $subcategory = new SubCategory;
             $subcategory->name = $request->input('name');
             $subcategory->slug = $request->input('slug');
-            $subcategory->category = $request->input('category');
-            if ($subcategory->hasFile('img')) {
+            $subcategory->category_id = $request->input('category_id');
+            if ($request->hasFile('img')) {
                 $subcategory->img = $request->file('img')->store('subcategories');
             }
             $subcategory->save();
 
-            return redirect()->route('admin.view.category.list')->with('message', [
+            return redirect()->route('admin.view.subcategory.list')->with('message', [
                 'status' => 'success',
                 'title' => 'SubCategory created',
                 'description' => 'The SubCategory is successfully created.'
@@ -143,124 +152,125 @@ class SubCategoryController extends Controller
         }
     }
 
-    // /**
-    //  * Handle SubCategory Update
-    //  *  
-    //  * @return mixed
-    //  */
-    // public function handleCategoryUpdate(Request $request, $id): RedirectResponse
-    // {
-    //     try {
-    //         $category = Category::find($id);
-    //         if (!$category) {
-    //             return redirect()->back()->with('message', [
-    //                 'status' => 'warning',
-    //                 'title' => 'Category not found',
-    //                 'description' => 'Category not found with specified ID'
-    //             ]);
-    //         }
-    //         $validation = Validator::make($request->all(), [
-    //             'name' => ['required', 'string', 'min:1', 'max:250'],
-    //             'slug' => ['required', 'string', 'min:1', 'max:250'],
-    //             'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
-    //         ]);
+    /**
+     * Handle SubCategory Update
+     *  
+     * @return mixed
+     */
+    public function handleSubCategoryUpdate(Request $request, $id): RedirectResponse
+    {
+        try {
+            $subcategory = SubCategory::find($id);
+            if (!$subcategory) {
+                return redirect()->back()->with('message', [
+                    'status' => 'warning',
+                    'title' => 'SubCategory not found',
+                    'description' => 'SubCategory not found with specified ID'
+                ]);
+            }
+            $validation = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'min:1', 'max:250'],
+                'slug' => ['required', 'string', 'min:1', 'max:250'],
+                'category_id' => ['required', 'string', 'exists:categories,id'],
+                'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
+            ]);
 
-    //         if ($validation->fails()) {
-    //             return redirect()->back()->withErrors($validation)->withInput();
-    //         }
+            if ($validation->fails()) {
+                return redirect()->back()->withErrors($validation)->withInput();
+            }
 
-    //         $category->name = $request->input('name');
-    //         $category->slug = $request->input('slug');
-    //         if ($request->hasFile('img')) {
-    //             if (!is_null($category->img)) Storage::delete($category->img);
-    //             $category->img = $request->file('img')->store('categories');
-    //         }
-    //         $category->update();
+            $subcategory->name = $request->input('name');
+            $subcategory->slug = $request->input('slug');
+            if ($request->hasFile('img')) {
+                if (!is_null($subcategory->img)) Storage::delete($subcategory->img);
+                $subcategory->img = $request->file('img')->store('subcategories');
+            }
+            $subcategory->update();
 
 
-    //         return redirect()->route('admin.view.category.list')->with('message', [
-    //             'status' => 'success',
-    //             'title' => 'Category saved',
-    //             'description' => 'The Category is successfully saved.'
-    //         ]);
-    //     } catch (Exception $exception) {
-    //         return redirect()->back()->with('message', [
-    //             'status' => 'error',
-    //             'title' => 'An error occcured',
-    //             'description' => $exception->getMessage(),
-    //         ]);
-    //     }
-    // }
+            return redirect()->route('admin.view.subcategory.list')->with('message', [
+                'status' => 'success',
+                'title' => 'SubCategory created',
+                'description' => 'The SubCategory is successfully created.'
+            ]);
+        } catch (Exception $exception) {
+            return redirect()->back()->with('message', [
+                'status' => 'error',
+                'title' => 'An error occcured',
+                'description' => $exception->getMessage(),
+            ]);
+        }
+    }
 
-    // /**
-    //  * Handle Toggle SubCategory Status
-    //  *  
-    //  * @return mixed
-    //  */
-    // public function handleTogglecategoryStatus(Request $request): Response
-    // {
-    //     try {
+    /**
+     * Handle Toggle SubCategory Status
+     *  
+     * @return mixed
+     */
+    public function handleToggleSubCategoryStatus(Request $request): Response
+    {
+        try {
 
-    //         $validation = Validator::make($request->all(), [
-    //             'category_id' => ['required', 'string', 'exists:categories,id']
-    //         ]);
+            $validation = Validator::make($request->all(), [
+                'subcategory_id' => ['required', 'string', 'exists:sub_categories,id']
+            ]);
 
-    //         if ($validation->fails()) {
-    //             return response([
-    //                 'status' => false,
-    //                 'message' => $validation->errors()->first(),
-    //                 'error' => $validation->errors()->getMessages()
-    //             ], 200);
-    //         }
+            if ($validation->fails()) {
+                return response([
+                    'status' => false,
+                    'message' => $validation->errors()->first(),
+                    'error' => $validation->errors()->getMessages()
+                ], 200);
+            }
+            $subcategory = SubCategory::find($request->input('subcategory_id'));
+            $subcategory->status = !$subcategory->status;
+            $subcategory->update();
 
-    //         $category = Category::find($request->input('category_id'));
-    //         $category->status = !$category->status;
-    //         $category->update();
+            return response([
+                'status' => true,
+                'message' => "Status successfully updated",
+                'data' => $subcategory
+            ], 200);
+        } catch (Exception $exception) {
+            return response([
+                'status' => false,
+                'message' => "An error occcured",
+                'error' => $exception->getMessage()
+            ], 500);
+        }
+    }
 
-    //         return response([
-    //             'status' => true,
-    //             'message' => "Status successfully updated",
-    //             'data' => $category
-    //         ], 200);
-    //     } catch (Exception $exception) {
-    //         return response([
-    //             'status' => false,
-    //             'message' => "An error occcured",
-    //             'error' => $exception->getMessage()
-    //         ], 500);
-    //     }
-    // }
+    /**
+     * Handle SubCategory Delete
+     *  
+     * @return mixed
+     */
+    public function handleSubCategoryDelete($id): RedirectResponse
+    {
+        try {
+            $subcategory = SubCategory::find($id);
 
-    // /**
-    //  * Handle SubCategory Delete
-    //  *  
-    //  * @return mixed
-    //  */
-    // public function handlecategoryDelete($id): RedirectResponse
-    // {
-    //     try {
-    //         $category = Category::find($id);
-    //         if (!$category) {
-    //             return redirect()->back()->with('message', [
-    //                 'status' => 'warning',
-    //                 'title' => 'Category not found',
-    //                 'description' => 'Category not found with specified ID'
-    //             ]);
-    //         }
+            if (!$subcategory) {
+                return redirect()->back()->with('message', [
+                    'status' => 'warning',
+                    'title' => 'SubCategory not found',
+                    'description' => 'SubCategory not found with specified ID'
+                ]);
+            }
 
-    //         $category->delete();
+            $subcategory->delete();
 
-    //         return redirect()->route('admin.view.category.list')->with('message', [
-    //             'status' => 'success',
-    //             'title' => 'Category deleted',
-    //             'description' => 'The Category access is successfully deleted.'
-    //         ]);
-    //     } catch (Exception $exception) {
-    //         return redirect()->back()->with('message', [
-    //             'status' => 'error',
-    //             'title' => 'An error occcured',
-    //             'description' => $exception->getMessage(),
-    //         ]);
-    //     }
-    // }
+            return redirect()->route('admin.view.subcategory.list')->with('message', [
+                'status' => 'success',
+                'title' => 'SubCategory deleted',
+                'description' => 'The SubCategory access is successfully deleted.'
+            ]);
+        } catch (Exception $exception) {
+            return redirect()->back()->with('message', [
+                'status' => 'error',
+                'title' => 'An error occcured',
+                'description' => $exception->getMessage(),
+            ]);
+        }
+    }
 }

@@ -56,17 +56,17 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/update/{id}', 'viewCategoryUpdate')->name('admin.view.category.update');
         Route::post('/create', 'handleCategoryCreate')->name('admin.handle.category.create');
         Route::post('/update/{id}', 'handleCategoryUpdate')->name('admin.handle.category.update');
-        Route::put('/status', 'handleTogglecategoryStatus')->name('admin.handle.category.status');
-        Route::get('/delete/{id}', 'handlecategoryDelete')->name('admin.handle.category.delete');
+        Route::put('/status', 'handleToggleCategoryStatus')->name('admin.handle.category.status');
+        Route::get('/delete/{id}', 'handleCategoryDelete')->name('admin.handle.category.delete');
     });
 
     Route::prefix('sub-category')->controller(SubCategoryController::class)->group(function () {
         Route::get('/', 'viewSubCategoryList')->name('admin.view.subcategory.list');
         Route::get('/create', 'viewSubCategoryCreate')->name('admin.view.subcategory.create');
         Route::get('/update/{id}', 'viewSubCategoryUpdate')->name('admin.view.subcategory.update');
-        Route::get('/create', 'handleSubCategoryCreate')->name('admin.handle.subcategory.create');
-        Route::get('//update/{id}', 'handleSubCategoryUpdate')->name('admin.handle.subcategory.update');
-        Route::get('/status', 'handleToggleSubCategoryStatus')->name('admin.handle.subcategory.status');
+        Route::post('/create', 'handleSubCategoryCreate')->name('admin.handle.subcategory.create');
+        Route::post('//update/{id}', 'handleSubCategoryUpdate')->name('admin.handle.subcategory.update');
+        Route::put('/status', 'handleToggleSubCategoryStatus')->name('admin.handle.subcategory.status');
         Route::get('/delete/{id}', 'handleSubCategoryDelete')->name('admin.handle.subcategory.delete');
     });
 });

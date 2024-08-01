@@ -11,5 +11,16 @@ use Illuminate\Notifications\Notifiable;
 
 class Category extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes, HasUuids, ProfileImage, Notifiable;
+    use HasFactory, HasUuids, SoftDeletes, ProfileImage, Notifiable;
+
+    protected $table = 'categories';
+    protected $primarykey = 'id';
+
+    protected $fillable = ['name'];
+
+
+    public function sub_categories()
+    {
+        return $this->hasMany(SubCategory::class);
+    }
 }

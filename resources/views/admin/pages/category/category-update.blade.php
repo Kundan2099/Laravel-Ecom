@@ -7,9 +7,9 @@
             <li><i data-feather="chevron-right"></i></li>
             <li><a href="{{ route('admin.view.category.list') }}">Category</a></li>
             <li><i data-feather="chevron-right"></i></li>
-            <li><a href="{{ route('admin.view.category.update', ['id' => $category->id]) }}">Eddit Category</a></li>
+            <li><a href="{{ route('admin.view.category.update', ['id' => $category->id]) }}">Edit Category</a></li>
         </ul>
-        <h1 class="panel-title">Eddit Category</h1>
+        <h1 class="panel-title">Edit Category</h1>
     </div>
 @endsection
 

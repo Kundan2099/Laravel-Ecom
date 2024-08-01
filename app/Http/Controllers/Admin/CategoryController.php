@@ -18,8 +18,8 @@ interface CategoryInterface
     public function viewCategoryUpdate($id);
     public function handleCategoryCreate(Request $request);
     public function handleCategoryUpdate(Request $request, $id);
-    public function handleTogglecategoryStatus(Request $request);
-    public function handlecategoryDelete($id);
+    public function handleToggleCategoryStatus(Request $request);
+    public function handleCategoryDelete($id);
 }
 
 class CategoryController extends Controller implements CategoryInterface
@@ -199,7 +199,7 @@ class CategoryController extends Controller implements CategoryInterface
      *  
      * @return mixed
      */
-    public function handleTogglecategoryStatus(Request $request): Response
+    public function handleToggleCategoryStatus(Request $request): Response
     {
         try {
 
@@ -238,7 +238,7 @@ class CategoryController extends Controller implements CategoryInterface
      *  
      * @return mixed
      */
-    public function handlecategoryDelete($id): RedirectResponse
+    public function handleCategoryDelete($id): RedirectResponse
     {
         try {
             $category = Category::find($id);

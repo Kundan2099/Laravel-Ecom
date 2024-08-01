@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sub_categories', function (Blueprint $table) {
-            $table->id('id');
+            $table->uuid('id')->primary();
+            $table->foreignUlid('category_id', 36)->references('id')->on('categories');
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->string('img')->nullable();
