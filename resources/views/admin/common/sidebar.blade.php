@@ -48,8 +48,8 @@
                     </a>
                 </li>
 
-                <li class="sidebar-tab" id="user-tab">
-                    <a href="">
+                <li class="sidebar-tab" id="brand-tab">
+                    <a href="{{route('admin.view.brand.list')}}">
                         <i data-feather="pocket"></i>
                         <span>Brands</span>
                     </a>

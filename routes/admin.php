@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAccessController;
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SubCategoryController;
@@ -68,5 +69,15 @@ Route::middleware('auth:admin')->group(function () {
         Route::post('//update/{id}', 'handleSubCategoryUpdate')->name('admin.handle.subcategory.update');
         Route::put('/status', 'handleToggleSubCategoryStatus')->name('admin.handle.subcategory.status');
         Route::get('/delete/{id}', 'handleSubCategoryDelete')->name('admin.handle.subcategory.delete');
+    });
+
+    Route::prefix('brand')->controller(BrandController::class)->group(function() {
+        Route::get('/', 'viewBrandList')->name('admin.view.brand.list');
+        Route::get('/create', 'viewBrandCreate')->name('admin.view.brand.create');
+        Route::get('/update/{id}', 'viewBrandUpdate')->name('admin.view.brand.update');
+        Route::post('/create', 'handleBrandCreate')->name('admin.handle.brand.create');
+        Route::post('//update/{id}', 'handleBrandUpdate')->name('admin.handle.brand.update');
+        Route::put('/status', 'handleToggleBrandStatus')->name('admin.handle.brand.status');
+        Route::get('/delete/{id}', 'handleBrandDelete')->name('admin.handle.brand.delete');
     });
 });

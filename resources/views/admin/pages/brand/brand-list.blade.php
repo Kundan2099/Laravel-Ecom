@@ -5,9 +5,9 @@
         <ul class="breadcrumb">
             <li><a href="{{ route('admin.view.dashboard') }}">Admin</a></li>
             <li><i data-feather="chevron-right"></i></li>
-            <li><a href="{{ route('admin.view.category.list') }}">Category</a></li>
+            <li><a href="{{ route('admin.view.brand.list') }}">Brand</a></li>
         </ul>
-        <h1 class="panel-title">Category</h1>
+        <h1 class="panel-title">Brand</h1>
     </div>
 @endsection
 
@@ -16,13 +16,13 @@
     <figure class="panel-card">
         <div class="panel-card-header">
             <div>
-                <h1 class="panel-card-title">Category</h1>
-                <p class="panel-card-description">List of all category in the system</p>
+                <h1 class="panel-card-title">Brand</h1>
+                <p class="panel-card-description">List of all brand in the system</p>
             </div>
             {{-- @can(\App\Enums\Permission::ADD_ACCESS->value) --}}
             <div>
-                <a href="{{ route('admin.view.category.create') }}" class="btn-primary-sm flex">
-                    <span class="lg:block md:block sm:hidden mr-2">Add Category</span>
+                <a href="{{ route('admin.view.brand.create') }}" class="btn-primary-sm flex">
+                    <span class="lg:block md:block sm:hidden mr-2">Add Brand</span>
                     <i data-feather="plus"></i>
                 </a>
             </div>
@@ -35,32 +35,22 @@
                         <th>Sr. No.</th>
                         <th>Name</th>
                         <th>Slug</th>
-                        <th>Image</th>
                         {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
                         <th>Status</th>
                         {{-- @endcan --}}
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @foreach ($categories as $key => $category)
+                        @foreach ($brands as $key => $brand)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $category->name }}</td>
-                                <td>{{ $category->slug }}</td>
-                                <td>
-                                    @if ($category->img)
-                                        <img src="{{ asset('storage/' . $category->img) }}" class="img-fluid"
-                                            style="max-width:80px" alt="{{ $category->img }}">
-                                    @else
-                                        <img src="{{ asset('admin/images/thumbnail-default.jpg') }}" class="img-fluid"
-                                            style="max-width:80px" alt="avatar.png">
-                                    @endif
-                                </td>
+                                <td>{{ $brand->name }}</td>
+                                <td>{{ $brand->slug }}</td>
                                 {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
                                 <td>
                                     <label class="toggler-switch">
-                                        <input onchange="handleUpdateStatus('{{ $category->id }}')"
-                                            @checked($category->status) type="checkbox">
+                                        <input onchange="handleUpdateStatus('{{ $brand->id }}')"
+                                            @checked($brand->status) type="checkbox">
                                         <div class="slider"></div>
                                     </label>
                                 </td>
@@ -72,15 +62,15 @@
                                         <div class="dropdown-menu">
                                             <ul>
                                                 {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
-                                                <li><a href="{{ route('admin.view.category.update', ['id' => $category->id]) }}"
+                                                <li><a href="{{ route('admin.view.brand.update', ['id' => $brand->id]) }}"
                                                         class="dropdown-link-primary"><i data-feather="edit"
-                                                            class="mr-1"></i> Edit Category</a></li>
+                                                            class="mr-1"></i> Edit Brand</a></li>
                                                 {{-- @endcan --}}
 
                                                 {{-- @can(\App\Enums\Permission::DELETE_ACCESS->value) --}}
-                                                <li><a href="javascript:handleDelete('{{ $category->id }}')"
+                                                <li><a href="javascript:handleDelete('{{ $brand->id }}')"
                                                         class="dropdown-link-danger"><i data-feather="trash-2"
-                                                            class="mr-1"></i> Delete Category</a></li>
+                                                            class="mr-1"></i> Delete Brand</a></li>
                                                 {{-- @endcan --}}
 
                                             </ul>
@@ -98,16 +88,16 @@
 
 @section('panel-script')
     <script>
-        document.getElementById('category-tab').classList.add('active');
+        document.getElementById('brand-tab').classList.add('active');
 
         const handleUpdateStatus = (id) => {
-            fetch("{{ route('admin.handle.category.status') }}", {
+            fetch("{{ route('admin.handle.brand.status') }}", {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    category_id: id,
+                    brand_id: id,
                     _token: "{{ csrf_token() }}"
                 })
             }).then((response) => {
@@ -124,14 +114,14 @@
         const handleDelete = (id) => {
             swal({
                     title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this category access!",
+                    text: "Once deleted, you will not be able to recover this brand access!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        window.location = `{{ url('admin/category/delete') }}/${id}`;
+                        window.location = `{{ url('admin/brand/delete') }}/${id}`;
                     }
                 });
         }
