@@ -22,7 +22,7 @@ interface SubCategoryInterface
     public function handleToggleSubCategoryStatus(Request $request);
     public function handleSubCategoryDelete($id);
 }
-class SubCategoryController extends Controller
+class SubCategoryController extends Controller implements SubCategoryInterface
 {
     /**
      * create a new controller instance.

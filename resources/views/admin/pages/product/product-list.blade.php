@@ -5,23 +5,24 @@
         <ul class="breadcrumb">
             <li><a href="{{ route('admin.view.dashboard') }}">Admin</a></li>
             <li><i data-feather="chevron-right"></i></li>
-            <li><a href="{{ route('admin.view.subcategory.list') }}">Sub Category</a></li>
+            <li><a href="{{ route('admin.view.product.list') }}">Product</a></li>
         </ul>
-        <h1 class="panel-title">Sub Category</h1>
+        <h1 class="panel-title">Product</h1>
     </div>
 @endsection
+
 
 @section('panel-body')
     <figure class="panel-card">
         <div class="panel-card-header">
             <div>
-                <h1 class="panel-card-title">Category</h1>
-                <p class="panel-card-description">List of all category in the system</p>
+                <h1 class="panel-card-title">Product</h1>
+                <p class="panel-card-description">List of all product in the system</p>
             </div>
             {{-- @can(\App\Enums\Permission::ADD_ACCESS->value) --}}
             <div>
-                <a href="{{ route('admin.view.subcategory.create') }}" class="btn-primary-sm flex">
-                    <span class="lg:block md:block sm:hidden mr-2">Add Sub Category</span>
+                <a href="{{ route('admin.view.product.create') }}" class="btn-primary-sm flex">
+                    <span class="lg:block md:block sm:hidden mr-2">Add Product</span>
                     <i data-feather="plus"></i>
                 </a>
             </div>
@@ -32,36 +33,28 @@
                 <table class="data-table">
                     <thead>
                         <th>Sr. No.</th>
-                        <th>Name</th>
-                        <th>Slug</th>
-                        <th>Category</th>
-                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Sku</th>
                         {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
                         <th>Status</th>
                         {{-- @endcan --}}
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @foreach ($subcategories as $key => $subcategory)
+                        @foreach ($products as $key => $product)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $subcategory->name }}</td>
-                                <td>{{ $subcategory->slug }}</td>
-                                {{-- <td>{{ $subcategory->category->name }}</td> --}}
-                                <td>
-                                    @if ($subcategory->img)
-                                        <img src="{{ asset('storage/' . $subcategory->img) }}" class="img-fluid"
-                                            style="max-width:80px" alt="{{ $subcategory->img }}">
-                                    @else
-                                        <img src="{{ asset('admin/images/thumbnail-default.jpg') }}" class="img-fluid"
-                                            style="max-width:80px" alt="avatar.png">
-                                    @endif
-                                </td>
+                                <td>{{ $product->title }}</td>
+                                <td>{{ $product->price }}</td>
+                                <td>{{ $product->qty }}</td>
+                                <td>{{ $product->sku }}</td>
                                 {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
                                 <td>
                                     <label class="toggler-switch">
-                                        <input onchange="handleUpdateStatus('{{ $subcategory->id }}')"
-                                            @checked($subcategory->status) type="checkbox">
+                                        <input onchange="handleUpdateStatus('{{ $product->id }}')"
+                                            @checked($product->status) type="checkbox">
                                         <div class="slider"></div>
                                     </label>
                                 </td>
@@ -73,16 +66,17 @@
                                         <div class="dropdown-menu">
                                             <ul>
                                                 {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
-                                                <li><a href="{{ route('admin.view.subcategory.update', ['id' => $subcategory->id]) }}"
+                                                <li><a href="{{ route('admin.view.product.update', ['id' => $product->id]) }}"
                                                         class="dropdown-link-primary"><i data-feather="edit"
-                                                            class="mr-1"></i> Edit Category</a></li>
+                                                            class="mr-1"></i> Edit Product</a></li>
                                                 {{-- @endcan --}}
 
                                                 {{-- @can(\App\Enums\Permission::DELETE_ACCESS->value) --}}
-                                                <li><a href="javascript:handleDelete('{{ $subcategory->id }}')"
+                                                <li><a href="javascript:handleDelete('{{ $product->id }}')"
                                                         class="dropdown-link-danger"><i data-feather="trash-2"
-                                                            class="mr-1"></i> Delete Sub Category</a></li>
+                                                            class="mr-1"></i> Delete Product</a></li>
                                                 {{-- @endcan --}}
+
                                             </ul>
                                         </div>
                                     </div>
@@ -98,16 +92,16 @@
 
 @section('panel-script')
     <script>
-        document.getElementById('subcategory-tab').classList.add('active');
+        document.getElementById('product-tab').classList.add('active');
 
         const handleUpdateStatus = (id) => {
-            fetch("{{ route('admin.handle.subcategory.status') }}", {
+            fetch("{{ route('admin.handle.product.status') }}", {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    subcategory_id: id,
+                    product_id: id,
                     _token: "{{ csrf_token() }}"
                 })
             }).then((response) => {
@@ -124,14 +118,14 @@
         const handleDelete = (id) => {
             swal({
                     title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this subcategory access!",
+                    text: "Once deleted, you will not be able to recover this product access!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        window.location = `{{ url('admin/sub-category/delete') }}/${id}`;
+                        window.location = `{{ url('admin/product/delete') }}/${id}`;
                     }
                 });
         }

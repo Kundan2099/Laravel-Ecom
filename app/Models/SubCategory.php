@@ -16,10 +16,17 @@ class SubCategory extends Model
     protected $table = 'sub_categories';
     protected $primarykey = 'id';
 
-    protected $fillable = ['name','category_id'];
+    protected $fillable = ['name', 'slug', 'category_id'];
 
+    
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+
+    public function products()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

@@ -55,8 +55,8 @@
                     </a>
                 </li>
 
-                <li class="sidebar-tab" id="user-tab">
-                    <a href="">
+                <li class="sidebar-tab" id="product-tab">
+                    <a href="{{route('admin.view.product.list')}}">
                         <i data-feather="tag"></i>
                         <span>Products</span>
                     </a>

@@ -20,7 +20,7 @@ interface BrandInterface
     public function handleToggleBrandStatus(Request $request);
     public function handleBrandDelete($id);
 }
-class BrandController extends Controller
+class BrandController extends Controller implements BrandInterface
 {
     /**
      * create a new controller instance.
@@ -62,6 +62,7 @@ class BrandController extends Controller
     {
         try {
             return view('admin.pages.brand.brand-create');
+            
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',

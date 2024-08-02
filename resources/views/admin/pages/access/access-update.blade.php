@@ -14,7 +14,8 @@
 @endsection
 
 @section('panel-body')
-    <form action="{{route('admin.handle.admin.access.update', ['id' => $admin->id])}}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.handle.admin.access.update', ['id' => $admin->id]) }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         <figure class="panel-card">
             <div class="panel-card-header">

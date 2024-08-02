@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -79,5 +80,15 @@ Route::middleware('auth:admin')->group(function () {
         Route::post('//update/{id}', 'handleBrandUpdate')->name('admin.handle.brand.update');
         Route::put('/status', 'handleToggleBrandStatus')->name('admin.handle.brand.status');
         Route::get('/delete/{id}', 'handleBrandDelete')->name('admin.handle.brand.delete');
+    });
+
+    Route::prefix('product')->controller(ProductController::class)->group(function() {
+        Route::get('/', 'viewProductList')->name('admin.view.product.list');
+        Route::get('/create', 'viewProductCreate')->name('admin.view.product.create');
+        Route::get('/update/{id}', 'viewProductUpdate')->name('admin.view.product.update');
+        Route::post('/create', 'handleProductCreate')->name('admin.handle.product.create');
+        Route::post('//update/{id}', 'handleProductUpdate')->name('admin.handle.product.update');
+        Route::put('/status', 'handleToggleProductStatus')->name('admin.handle.product.status');
+        Route::get('/delete/{id}', 'handleProductDelete')->name('admin.handle.product.delete');
     });
 });

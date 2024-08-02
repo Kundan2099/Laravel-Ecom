@@ -64,8 +64,8 @@ class CategoryController extends Controller implements CategoryInterface
     public function viewCategoryCreate(): mixed
     {
         try {
-
             return view('admin.pages.category.category-create');
+            
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
