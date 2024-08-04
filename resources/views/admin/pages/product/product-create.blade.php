@@ -146,14 +146,14 @@
                         @enderror
                     </div>
 
-                    {{-- Media --}}
+                    {{-- Image --}}
                     <div class="input-group 2xl:col-span-5 lg:col-span-4 md:col-span-2 sm:col-span-1">
                         <label for="image" class="input-label">Media <span>(Format: png, jpg, jpeg, webp,
                                 avif)</span></label>
                         <div class="flex space-x-3 my-2">
                             <div class="input-box-dragable">
                                 <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp, image/avif"
-                                    onchange="handleThumbnailPreview(event)" name="img">
+                                    onchange="handleThumbnailPreview(event)" name="image">
                                 <i data-feather="upload-cloud"></i>
                                 <span>Darg and Drop Image Files</span>
                             </div>
@@ -282,9 +282,9 @@
 
         const handleThumbnailPreview = (event) => {
             if (event.target.files.length == 0) {
-                document.getElementById('img').src = "{{ asset('admin/images/default-thumbnail.png') }}";
+                document.getElementById('image').src = "{{ asset('admin/images/default-thumbnail.png') }}";
             } else {
-                document.getElementById('img').src = URL.createObjectURL(event.target.files[0])
+                document.getElementById('image').src = URL.createObjectURL(event.target.files[0])
             }
         }
     </script>

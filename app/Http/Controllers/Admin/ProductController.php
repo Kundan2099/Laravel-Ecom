@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\SubCategory;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+
+use function PHPUnit\Framework\isNull;
 
 interface ProductInterface
 {
@@ -45,9 +49,9 @@ class ProductController extends Controller implements ProductInterface
     public function viewProductList(): mixed
     {
         try {
-            $products = Product::all();
+            $products = Product::with('productimage')->get();
             return view('admin.pages.product.product-list', [
-                'products' => $products
+                'products' => $products,
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -133,6 +137,7 @@ class ProductController extends Controller implements ProductInterface
                 'slug' => ['nullable', 'string', 'min:1', 'max:250'],
                 'description' => ['nullable', 'text', 'min:2', 'max:500'],
                 'price' => ['nullable', 'numeric', 'min:1'],
+                'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
                 'compare_price' => ['nullable', 'numeric', 'min:1'],
                 'category_id' => ['nullable', 'string', 'exists:categories,id'],
                 'sub_category_id' => ['nullable', 'string', 'exists:sub_categories,id'],
@@ -142,11 +147,12 @@ class ProductController extends Controller implements ProductInterface
                 'barcode' => ['nullable', 'string', 'min:1', 'max:250'],
             ];
 
-            if (!empty($request->track_qty) && $request->track_qty == 'Yes') {
+            if ($request->has('track_qty') && $request->track_qty == 'Yes') {
                 $rules['qty'] =  ['required', 'numeric'];
             };
 
             $validation = Validator::make($request->all(), $rules);
+
             if ($validation->fails()) {
                 return redirect()->back()->withErrors($validation)->withInput();
             }
@@ -165,6 +171,13 @@ class ProductController extends Controller implements ProductInterface
             $product->barcode = $request->input('barcode');
             $product->qty = $request->input('qty');
             $product->save();
+
+            $images = new ProductImage;
+            $images->product_id = $product->id;
+            if ($request->hasFile('image')) {
+                $images->image = $request->file('image')->store('productimages');
+            }
+            $images->save();
 
             return redirect()->route('admin.view.product.list')->with('message', [
                 'status' => 'success',
@@ -198,15 +211,16 @@ class ProductController extends Controller implements ProductInterface
             }
 
             $rules = [
-                'title' => ['nullable', 'string', 'min:1', 'max:250'],
-                'slug' => ['nullable', 'string', 'min:1', 'max:250'],
+                'title' => ['required', 'string', 'min:1', 'max:250'],
+                'slug' => ['required', 'string', 'min:1', 'max:250'],
                 'description' => ['nullable', 'text', 'min:2', 'max:500'],
-                'price' => ['nullable', 'numeric', 'min:1'],
+                'price' => ['required', 'numeric', 'min:1'],
+                'image' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
                 'compare_price' => ['nullable', 'numeric', 'min:1'],
-                'category_id' => ['nullable', 'string', 'exists:categories,id'],
-                'sub_category_id' => ['nullable', 'string', 'exists:sub_categories,id'],
-                'brand_id' => ['nullable', 'string', 'exists:brands,id'],
-                'is_featured' => ['nullable', Rule::in(['Yes', 'No'])],
+                'category_id' => ['required', 'string', 'exists:categories,id'],
+                'sub_category_id' => ['required', 'string', 'exists:sub_categories,id'],
+                'brand_id' => ['required', 'string', 'exists:brands,id'],
+                'is_featured' => ['required', Rule::in(['Yes', 'No'])],
                 'sku' => ['nullable', 'string', 'min:1', 'max:250'],
                 'barcode' => ['nullable', 'string', 'min:1', 'max:250'],
             ];
@@ -233,6 +247,14 @@ class ProductController extends Controller implements ProductInterface
             $product->barcode = $request->input('barcode');
             $product->qty = $request->input('qty');
             $product->update();
+
+            $images = new ProductImage;
+            $images->product_id = $product->id;
+            if ($request->hasFile('image')) {
+                if (!is_null($images->image)) Storage::delete($images->image);
+                $images->image = $request->file('image')->store('productimages');
+            }
+            $images->update();
 
             return redirect()->route('admin.view.product.list')->with('message', [
                 'status' => 'success',

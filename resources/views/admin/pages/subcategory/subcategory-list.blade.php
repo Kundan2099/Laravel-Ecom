@@ -47,7 +47,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $subcategory->name }}</td>
                                 <td>{{ $subcategory->slug }}</td>
-                                {{-- <td>{{ $subcategory->category->name }}</td> --}}
+                                <td>{{ $subcategory->category->name }}</td>
                                 <td>
                                     @if ($subcategory->img)
                                         <img src="{{ asset('storage/' . $subcategory->img) }}" class="img-fluid"

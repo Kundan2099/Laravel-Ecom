@@ -6,6 +6,7 @@ use App\Traits\ProfileImage;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
@@ -13,20 +14,14 @@ class SubCategory extends Model
 {
     use HasFactory, HasUuids, SoftDeletes, ProfileImage, Notifiable;
 
-    protected $table = 'sub_categories';
-    protected $primarykey = 'id';
-
-    protected $fillable = ['name', 'slug', 'category_id'];
-
-    
-    public function category()
+    public function category(): HasOne
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasOne(Category::class, 'id', 'category_id');
     }
 
+    // public function brand()
+    // {
+    //     return $this->belongsTo(Brand::class);
+    // }
 
-    public function products()
-    {
-        return $this->belongsTo(Product::class);
-    }
 }

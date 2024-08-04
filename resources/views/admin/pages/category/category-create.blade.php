@@ -66,8 +66,6 @@
                             <span class="input-error">{{ $message }}</span>
                         @enderror
                     </div>
-
-
                 </div>
             </div>
             <div class="panel-card-footer">

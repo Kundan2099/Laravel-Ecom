@@ -37,6 +37,7 @@
                         <th>Price</th>
                         <th>Qty</th>
                         <th>Sku</th>
+                        <th>Image</th>
                         {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
                         <th>Status</th>
                         {{-- @endcan --}}
@@ -50,6 +51,16 @@
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->qty }}</td>
                                 <td>{{ $product->sku }}</td>
+                                <td>
+                                    @if ($product->productimage[0]->image)
+                                        <img src="{{ asset('storage/' . $product->productimage[0]->image) }}"
+                                            class="img-fluid" style="max-width:80px"
+                                            alt="{{ $product->productimage[0]->image }}">
+                                    @else
+                                        <img src="{{ asset('admin/images/thumbnail-default.jpg') }}" class="img-fluid"
+                                            style="max-width:80px" alt="avatar.png">
+                                    @endif
+                                </td>
                                 {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
                                 <td>
                                     <label class="toggler-switch">

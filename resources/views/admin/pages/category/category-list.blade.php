@@ -74,7 +74,7 @@
                                                 {{-- @can(\App\Enums\Permission::EDIT_ACCESS->value) --}}
                                                 <li><a href="{{ route('admin.view.category.update', ['id' => $category->id]) }}"
                                                         class="dropdown-link-primary"><i data-feather="edit"
-                                                            class="mr-1"></i> Edit Category</a></li>
+                                                            class="mr-1"></i> Edit Admin Access</a></li>
                                                 {{-- @endcan --}}
 
                                                 {{-- @can(\App\Enums\Permission::DELETE_ACCESS->value) --}}

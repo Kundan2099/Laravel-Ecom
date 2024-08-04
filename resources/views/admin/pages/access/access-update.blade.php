@@ -29,6 +29,12 @@
                         <i data-feather="trash"></i>
                     </button>
                 </div>
+                <div>
+                    <button type="button" class="btn-danger-sm flex items-center justify-center" onclick="handleDelete()">
+                        <span class="lg:block md:block sm:hidden mr-2">Delete</span>
+                        <i data-feather="trash"></i>
+                    </button>
+                </div>
             </div>
             <div class="panel-card-body">
                 <div class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-5">
@@ -124,4 +130,30 @@
             </div>
         </figure>
     </form>
+@endsection
+
+
+@section('panel-script')
+    <script>
+        document.getElementById('admin-access-tab').classList.add('active');
+
+
+        @can(\App\Enums\Permission::DELETE_ACCESS->value)
+        const handleDelete = () => {
+            swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this admin access!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        window.location =
+                            "{{ route('admin.handle.admin.access.delete', ['id' => $admin->id]) }}";
+                    }
+                });
+        }
+        @endcan
+    </script>
 @endsection

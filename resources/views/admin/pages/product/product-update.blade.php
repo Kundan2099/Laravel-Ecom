@@ -14,7 +14,8 @@
 @endsection
 
 @section('panel-body')
-    <form action="{{ route('admin.handle.product.update',['id' => $product->id]) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.handle.product.update', ['id' => $product->id]) }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         <figure class="panel-card">
             <div class="panel-card-header">
@@ -149,11 +150,11 @@
                     {{-- Media --}}
                     <div class="input-group 2xl:col-span-5 lg:col-span-4 md:col-span-2 sm:col-span-1">
                         <label for="image" class="input-label">Media <span>(Format: png, jpg, jpeg, webp,
-                                avif)</span></label>
+                                avif)</span> <em>*</em></label>
                         <div class="flex space-x-3 my-2">
                             <div class="input-box-dragable">
                                 <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp, image/avif"
-                                    onchange="handleThumbnailPreview(event)" name="img">
+                                    onchange="handleThumbnailPreview(event)" name="image">
                                 <i data-feather="upload-cloud"></i>
                                 <span>Darg and Drop Image Files</span>
                             </div>
@@ -164,7 +165,6 @@
                             <span class="input-error">{{ $message }}</span>
                         @enderror
                     </div>
-
                 </div>
             </div>
         </figure>
@@ -195,7 +195,8 @@
                     {{-- Compare at Price --}}
                     <div class="input-group">
                         <label for="compare_price" class="input-label">Compare at Price<em>*</em></label>
-                        <input type="text" name="compare_price" value="{{ old('compare_price', $product->compare_price) }}"
+                        <input type="text" name="compare_price"
+                            value="{{ old('compare_price', $product->compare_price) }}"
                             class="input-box-md @error('compare_price') input-invalid @enderror"
                             placeholder="Enter Compare Price" minlength="1" maxlength="250" required>
                         @error('compare_price')
@@ -258,7 +259,7 @@
                         {{-- Qty --}}
                         <div class="input-group" x-show="open">
                             <label for="qty" class="input-label">Qty</label>
-                            <input type="number" name="qty"
+                            <input type="number" name="qty" min="0"
                                 class="input-box-md @error('qty') input-invalid @enderror" placeholder="Qty"
                                 minlength="6" maxlength="20">
                             @error('qty')
@@ -282,9 +283,9 @@
 
         const handleThumbnailPreview = (event) => {
             if (event.target.files.length == 0) {
-                document.getElementById('img').src = "{{ asset('admin/images/default-thumbnail.png') }}";
+                document.getElementById('image').src = "{{ asset('admin/images/default-thumbnail.png') }}";
             } else {
-                document.getElementById('img').src = URL.createObjectURL(event.target.files[0])
+                document.getElementById('image').src = URL.createObjectURL(event.target.files[0])
             }
         }
     </script>

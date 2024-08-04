@@ -65,7 +65,6 @@ class CategoryController extends Controller implements CategoryInterface
     {
         try {
             return view('admin.pages.category.category-create');
-            
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
@@ -170,7 +169,7 @@ class CategoryController extends Controller implements CategoryInterface
             if ($validation->fails()) {
                 return redirect()->back()->withErrors($validation)->withInput();
             }
-            
+
             $category->name = $request->input('name');
             $category->slug = $request->input('slug');
             if ($request->hasFile('img')) {

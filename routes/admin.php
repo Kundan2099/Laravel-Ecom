@@ -38,7 +38,7 @@ Route::middleware('auth:admin')->group(function () {
     //     return redirect()->route('admin.view.login');
     // })->name('admin.handle.logout');
 
-    Route::get('/logout', [DashboardController::class, 'logout'])->name('admin.handle.logout');
+    Route::post('/logout', [DashboardController::class, 'logout'])->name('admin.handle.logout');
 
     Route::get('/dashboard', [DashboardController::class, 'viewDashboard'])->name('admin.view.dashboard');
 
