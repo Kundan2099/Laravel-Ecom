@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminLoginController;
+use App\Http\Controllers\Web\FrontController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('view.welcome');
 
+// Route::get('/index', function () {
+//     return view('web.pages.index');
+// });
 
+Route::get('/index', [FrontController::class, 'index']);

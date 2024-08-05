@@ -114,7 +114,7 @@ class CategoryController extends Controller implements CategoryInterface
 
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250'],
+                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:categories,id'],
                 'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
             ]);
 
@@ -162,7 +162,7 @@ class CategoryController extends Controller implements CategoryInterface
             }
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250'],
+                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:categories,id'],
                 'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
             ]);
 

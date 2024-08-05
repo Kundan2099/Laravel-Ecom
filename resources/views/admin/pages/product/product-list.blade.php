@@ -49,7 +49,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $product->title }}</td>
                                 <td>{{ $product->price }}</td>
-                                <td>{{ $product->qty }}</td>
+                                <td>{{ $product->qty }} left in Stock</td>
                                 <td>{{ $product->sku }}</td>
                                 <td>
                                     @if ($product->productimage[0]->image)

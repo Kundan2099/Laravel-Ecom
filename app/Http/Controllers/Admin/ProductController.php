@@ -134,7 +134,7 @@ class ProductController extends Controller implements ProductInterface
         try {
             $rules = [
                 'title' => ['nullable', 'string', 'min:1', 'max:250'],
-                'slug' => ['nullable', 'string', 'min:1', 'max:250'],
+                'slug' => ['nullable', 'string', 'min:1', 'max:250', 'exists:products,id'],
                 'description' => ['nullable', 'text', 'min:2', 'max:500'],
                 'price' => ['nullable', 'numeric', 'min:1'],
                 'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
@@ -212,7 +212,7 @@ class ProductController extends Controller implements ProductInterface
 
             $rules = [
                 'title' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250'],
+                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:products,id'],
                 'description' => ['nullable', 'text', 'min:2', 'max:500'],
                 'price' => ['required', 'numeric', 'min:1'],
                 'image' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],

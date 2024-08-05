@@ -120,7 +120,7 @@ class SubCategoryController extends Controller implements SubCategoryInterface
         try {
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250'],
+                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:sub_categories,id'],
                 'category_id' => ['required', 'string', 'exists:categories,id'],
                 'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
             ]);
@@ -170,7 +170,7 @@ class SubCategoryController extends Controller implements SubCategoryInterface
             }
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250'],
+                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:sub_categories,id'],
                 'category_id' => ['required', 'string', 'exists:categories,id'],
                 'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
             ]);

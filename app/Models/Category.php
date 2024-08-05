@@ -14,8 +14,9 @@ class Category extends Model
 {
     use HasFactory, HasUuids, SoftDeletes, ProfileImage, Notifiable;
 
-    // public function sub_categories(): HasMany
-    // {
-    //     return $this->hasMany(SubCategory::class);
-    // }
+
+    public function sub_categories(): HasMany
+    {
+        return $this->hasMany(SubCategory::class, 'category_id', 'id');
+    }
 }

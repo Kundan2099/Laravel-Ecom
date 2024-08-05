@@ -55,7 +55,7 @@
                         <div class="flex space-x-3 my-2">
                             <div class="input-box-dragable">
                                 <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp, image/avif"
-                                    onchange="handleThumbnailPreview(event)" name="img" required>
+                                    onchange="handleThumbnailPreview(event)" name="img">
                                 <i data-feather="upload-cloud"></i>
                                 <span>Darg and Drop Image Files</span>
                             </div>
