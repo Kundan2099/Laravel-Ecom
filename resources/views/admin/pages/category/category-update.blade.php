@@ -60,13 +60,9 @@
                                 <i data-feather="upload-cloud"></i>
                                 <span>Darg and Drop Image Files</span>
                             </div>
-                            {{-- @if ($category->img)
-                                <img src="{{ asset('storage/' . $category->img) }}" class="img-fluid"
-                                    style="max-width:266px" alt="{{ $category->img }}">
-                            @else --}}
-                            <img src="{{ asset('admin/images/default-thumbnail.png') }}" id="img" alt="img"
-                                class="input-thumbnail-preview">
-                            {{-- @endif --}}
+                            <img src="{{ is_null($category->img) ? asset('admin/images/default-thumbnail.png') : asset('storage/' . $category->img) }}"
+                                id="img" alt="img" class="input-thumbnail-preview">
+
                         </div>
                         @error('img')
                             <span class="input-error">{{ $message }}</span>
@@ -86,6 +82,9 @@
 
 @section('panel-script')
     <script>
+        document.getElementById('category-tab').classList.add('active');
+
+
         const handleThumbnailPreview = (event) => {
             if (event.target.files.length == 0) {
                 document.getElementById('img').src = "{{ asset('admin/images/default-thumbnail.png') }}";

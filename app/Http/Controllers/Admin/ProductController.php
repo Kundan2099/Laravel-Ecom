@@ -108,12 +108,14 @@ class ProductController extends Controller implements ProductInterface
             $category = Category::select('id', 'name')->orderBy('name', 'asc')->get();
             $subcategory = SubCategory::select('id', 'name')->orderBy('name', 'asc')->get();
             $brand = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
+            $products = Product::with('productimage')->get();
 
             return view('admin.pages.product.product-update', [
                 'product' => $product,
                 'category' => $category,
                 'subcategory' => $subcategory,
-                'brand' => $brand
+                'brand' => $brand,
+                'products' => $products
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
@@ -134,10 +136,10 @@ class ProductController extends Controller implements ProductInterface
         try {
             $rules = [
                 'title' => ['nullable', 'string', 'min:1', 'max:250'],
-                'slug' => ['nullable', 'string', 'min:1', 'max:250', 'exists:products,id'],
+                'slug' => ['nullable', 'string', 'min:1', 'max:250', 'unique:products'],
                 'description' => ['nullable', 'text', 'min:2', 'max:500'],
                 'price' => ['nullable', 'numeric', 'min:1'],
-                'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
+                'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv,avif'],
                 'compare_price' => ['nullable', 'numeric', 'min:1'],
                 'category_id' => ['nullable', 'string', 'exists:categories,id'],
                 'sub_category_id' => ['nullable', 'string', 'exists:sub_categories,id'],
@@ -212,10 +214,10 @@ class ProductController extends Controller implements ProductInterface
 
             $rules = [
                 'title' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:products,id'],
+                'slug' => ['required', 'string', 'min:1', 'max:250'],
                 'description' => ['nullable', 'text', 'min:2', 'max:500'],
                 'price' => ['required', 'numeric', 'min:1'],
-                'image' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
+                'image' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv,avif'],
                 'compare_price' => ['nullable', 'numeric', 'min:1'],
                 'category_id' => ['required', 'string', 'exists:categories,id'],
                 'sub_category_id' => ['required', 'string', 'exists:sub_categories,id'],

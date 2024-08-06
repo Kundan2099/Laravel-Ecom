@@ -114,8 +114,8 @@ class CategoryController extends Controller implements CategoryInterface
 
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:categories,id'],
-                'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
+                'slug' => ['required', 'string', 'min:1', 'max:250', 'unique:categories'],
+                'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv,avif'],
             ]);
 
             if ($validation->fails()) {
@@ -160,10 +160,12 @@ class CategoryController extends Controller implements CategoryInterface
                     'description' => 'Category not found with specified ID'
                 ]);
             }
+
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:categories,id'],
-                'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv'],
+                $category,
+                'slug' => ['required', 'string', 'min:1', 'max:250'],
+                'img' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,mp4,mkv,avif'],
             ]);
 
             if ($validation->fails()) {

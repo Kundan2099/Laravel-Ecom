@@ -103,7 +103,7 @@ class BrandController extends Controller implements BrandInterface
         try {
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:brands,id'],
+                'slug' => ['required', 'string', 'min:1', 'max:250', 'unique:brands'],
             ]);
 
             if ($validation->fails()) {
@@ -147,7 +147,7 @@ class BrandController extends Controller implements BrandInterface
             }
             $validation = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'min:1', 'max:250'],
-                'slug' => ['required', 'string', 'min:1', 'max:250', 'exists:brands,id'],
+                'slug' => ['required', 'string', 'min:1', 'max:250'],
             ]);
 
             if ($validation->fails()) {

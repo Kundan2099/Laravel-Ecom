@@ -158,8 +158,10 @@
                                 <i data-feather="upload-cloud"></i>
                                 <span>Darg and Drop Image Files</span>
                             </div>
-                            <img src="{{ asset('admin/images/default-thumbnail.png') }}" id="image" alt="image"
-                                class="input-thumbnail-preview">
+                            
+                            <img src="{{ is_null($product->productimage[0]->image) ? asset('admin/images/default-thumbnail.png') : asset('storage/' . $product->productimage[0]->image) }}"
+                                id="image" alt="image" class="input-thumbnail-preview">
+
                         </div>
                         @error('image')
                             <span class="input-error">{{ $message }}</span>
