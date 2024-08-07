@@ -266,7 +266,7 @@ class ProductController extends Controller implements ProductInterface
         } catch (Exception $exception) {
             return redirect()->back()->with('message', [
                 'status' => 'error',
-                'title' => 'An error occcured',
+                'title' => 'An error occured',
                 'description' => $exception->getMessage(),
             ]);
         }

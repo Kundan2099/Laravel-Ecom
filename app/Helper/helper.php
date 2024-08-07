@@ -6,8 +6,7 @@ use App\Models\Category;
 
 function getCategories()
 {
-   return Category::orderBy('name', 'asc')
-      ->with('sub_categories')
+   return Category::with('sub_categories')->orderBy('name', 'asc')
       ->where('status', 1)
       ->orderBy('id', 'asc')
       ->get();
